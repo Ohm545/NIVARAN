@@ -1,0 +1,147 @@
+/* ============================================================
+   NIVARAN — Login Page
+   ============================================================ */
+
+.login-body {
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-4);
+}
+
+/* ── Container ───────────────────────────────────────────── */
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ── Brand ───────────────────────────────────────────────── */
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: #0f2554;
+}
+
+.login-brand-icon {
+  width: 36px;
+  height: 36px;
+  stroke: #0f2554;
+  flex-shrink: 0;
+}
+
+.login-brand-name {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.08em;
+  color: #0f2554;
+}
+
+.login-descriptor {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: calc(var(--space-1) * -1);
+  letter-spacing: 0.01em;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.login-card {
+  width: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.07);
+}
+
+.login-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: #0f2554;
+  margin-bottom: var(--space-1);
+}
+
+.login-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+/* ── Password wrapper (input + toggle) ───────────────────── */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+.password-toggle:hover {
+  color: var(--color-text);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+/* ── Submit button ───────────────────────────────────────── */
+.btn-full {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  background-color: #0f2554;
+  border-color: #0f2554;
+  margin-top: var(--space-2);
+  gap: var(--space-3);
+}
+
+.btn-full:hover:not(:disabled) {
+  background-color: #162d6a;
+  border-color: #162d6a;
+}
+
+/* ── Spinner inside button ───────────────────────────────── */
+.spinner-sm {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+}
+
+/* ── Alert spacing in card ───────────────────────────────── */
+.login-card .alert {
+  margin-bottom: var(--space-4);
+}
+
+/* ── Footer note ─────────────────────────────────────────── */
+.login-footer-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}

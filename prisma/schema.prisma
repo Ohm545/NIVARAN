@@ -1,0 +1,500 @@
+// NIVARAN — Prisma Schema (Module 1)
+// Run: npx prisma migrate dev --name module1_auth_org_rbac
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ORGANIZATION
+// ─────────────────────────────────────────────────────────────
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  units OrganizationalUnit[]
+  users User[]
+  governmentNeeds GovernmentNeed[]
+
+  @@map("organizations")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ORGANIZATIONAL UNIT
+// ─────────────────────────────────────────────────────────────
+
+model OrganizationalUnit {
+  id             String       @id @default(uuid())
+  name           String
+  code           String
+  description    String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  users User[]
+  governmentNeeds GovernmentNeed[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+  @@map("organizational_units")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ROLE
+// ─────────────────────────────────────────────────────────────
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique  // e.g. SYSTEM_ADMIN
+  displayName String
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rolePermissions RolePermission[]
+  userRoles       UserRole[]
+
+  @@map("roles")
+}
+
+// ─────────────────────────────────────────────────────────────
+// PERMISSION
+// ─────────────────────────────────────────────────────────────
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String   @unique  // e.g. USER_CREATE
+  displayName String
+  description String?
+  module      String   // e.g. USER, ORGANIZATION, PROBLEM, EVALUATION …
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+
+  @@index([module])
+  @@map("permissions")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ROLE ↔ PERMISSION  (join table)
+// ─────────────────────────────────────────────────────────────
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+// ─────────────────────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id                   String              @id @default(uuid())
+  name                 String
+  email                String              @unique
+  passwordHash         String
+  status               UserStatus          @default(ACTIVE)
+  organizationId       String?
+  organization         Organization?       @relation(fields: [organizationId], references: [id])
+  organizationalUnitId String?
+  organizationalUnit   OrganizationalUnit? @relation(fields: [organizationalUnitId], references: [id])
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  userRoles  UserRole[]
+  auditLogs  AuditLog[]
+  governmentNeeds GovernmentNeed[]
+  reviewActions   GovernmentNeedReview[]
+  discoveryRuns   DiscoveryRun[]
+  candidateReviews DiscoveryCandidate[]
+
+  @@index([email])
+  @@index([organizationId])
+  @@index([status])
+  @@map("users")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+// ─────────────────────────────────────────────────────────────
+// USER ↔ ROLE  (join table — supports multiple roles per user)
+// ─────────────────────────────────────────────────────────────
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  roleId    String
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+// ─────────────────────────────────────────────────────────────
+// GOVERNMENT NEED  (Module 2)
+// ─────────────────────────────────────────────────────────────
+
+model GovernmentNeed {
+  id                   String           @id @default(uuid())
+
+  // Core identity
+  title                String           @db.VarChar(300)
+  status               NeedStatus       @default(DRAFT)
+
+  // Section 1 — Problem
+  problemStatement     String           @db.Text
+  currentSituation     String?          @db.Text
+  existingProcess      String?          @db.Text
+
+  // Section 2 — Desired Outcome
+  desiredOutcome       String           @db.Text
+  successCriteria      String?          @db.Text
+
+  // Section 3 — Context
+  domain               String           @db.VarChar(100)
+  subDomain            String?          @db.VarChar(100)
+  geographicScope      String?          @db.VarChar(500)
+  operationalScope     String?          @db.VarChar(500)
+  affectedPopulation   String?          @db.Text
+  affectedPopulationEstimate BigInt?
+
+  // Section 3 — Timeline
+  expectedStartDate    DateTime?
+  expectedTargetDate   DateTime?
+  urgency              NeedUrgency?
+
+  // Section 4 — Constraints
+  constraints          String?          @db.Text
+
+  // Section 5 — Baseline & KPIs (original user-entered text preserved)
+  baselineInformation  String?          @db.Text
+  // Structured KPIs stored as JSON array — original user input
+  initialKPIs          Json?
+
+  // Section 6 — Additional
+  additionalContext    String?          @db.Text
+
+  // Ownership & scope
+  createdById          String
+  createdBy            User             @relation(fields: [createdById], references: [id])
+  organizationId       String
+  organization         Organization     @relation(fields: [organizationId], references: [id])
+  organizationalUnitId String?
+  organizationalUnit   OrganizationalUnit? @relation(fields: [organizationalUnitId], references: [id])
+
+  // Timestamps
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  submittedAt          DateTime?
+
+  // Module 4 — review history
+  reviewHistory        GovernmentNeedReview[]
+  // Module 5 — discovery
+  discoveryRuns        DiscoveryRun[]
+  discoveryCandidates  DiscoveryCandidate[]
+  discoveryCriteria    DiscoveryCriteria?
+
+  // Future AI-derived fields will be added as separate columns/relations
+  // so original user content is never overwritten.
+
+  @@index([status])
+  @@index([organizationId])
+  @@index([organizationalUnitId])
+  @@index([createdById])
+  @@index([createdAt])
+  @@map("government_needs")
+}
+
+enum NeedStatus {
+  DRAFT
+  SUBMITTED
+  SENT_BACK
+  APPROVED
+  REJECTED
+}
+
+enum NeedUrgency {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+// ─────────────────────────────────────────────────────────────
+// GOVERNMENT NEED REVIEW HISTORY  (Module 4)
+// Each row is an immutable record of one review action.
+// NEVER delete rows from this table.
+// ─────────────────────────────────────────────────────────────
+
+model GovernmentNeedReview {
+  id               String         @id @default(uuid())
+  governmentNeedId String
+  governmentNeed   GovernmentNeed @relation(fields: [governmentNeedId], references: [id])
+  actorId          String
+  actor            User           @relation(fields: [actorId], references: [id])
+  action           ReviewAction
+  comment          String?        @db.Text        // required for REJECTED / SENT_BACK
+  fromStatus       NeedStatus
+  toStatus         NeedStatus
+  createdAt        DateTime       @default(now())
+
+  @@index([governmentNeedId])
+  @@index([actorId])
+  @@index([action])
+  @@map("government_need_reviews")
+}
+
+enum ReviewAction {
+  SUBMITTED
+  APPROVED
+  REJECTED
+  SENT_BACK
+  RESUBMITTED
+}
+
+// ─────────────────────────────────────────────────────────────
+// MODULE 5 — SOLUTION DISCOVERY
+// ─────────────────────────────────────────────────────────────
+
+// ── SolutionProvider ──────────────────────────────────────────
+
+model SolutionProvider {
+  id                  String              @id @default(uuid())
+  organizationName    String              @db.VarChar(300)
+  providerType        ProviderType        @default(OTHER)
+  website             String?             @db.VarChar(500)
+  description         String?             @db.Text
+  headquarters        String?             @db.VarChar(300)
+  operatingRegions    Json?               // string[]
+  domains             Json?               // string[]
+  capabilities        Json?               // string[]
+  contactInformation  Json?               // { email, phone, etc. }
+  sourceType          SourceType          @default(MANUAL_ENTRY)
+  sourceReference     String?             @db.VarChar(500)
+  sourceLastUpdated   DateTime?
+  verificationStatus  VerificationStatus  @default(UNVERIFIED)
+  isActive            Boolean             @default(true)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  solutions           Solution[]
+
+  @@index([providerType])
+  @@index([sourceType])
+  @@map("solution_providers")
+}
+
+enum ProviderType {
+  STARTUP
+  COMPANY
+  NON_PROFIT
+  ACADEMIC
+  RESEARCH_ORGANIZATION
+  GOVERNMENT_ENTITY
+  OTHER
+}
+
+enum SourceType {
+  MANUAL_ENTRY
+  REGISTERED_PROVIDER
+  STARTUP_REGISTRY
+  GOVERNMENT_CHALLENGE
+  PUBLIC_CATALOG
+  OPEN_WEB
+  PARTNER_ECOSYSTEM
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  SOURCE_VERIFIED
+  GOVERNMENT_VERIFIED
+}
+
+// ── Solution ──────────────────────────────────────────────────
+
+model Solution {
+  id                      String           @id @default(uuid())
+  providerId              String
+  provider                SolutionProvider @relation(fields: [providerId], references: [id])
+  name                    String           @db.VarChar(300)
+  description             String?          @db.Text
+  problemAreas            Json?            // string[]
+  capabilities            Json?            // string[]
+  domains                 Json?            // string[]
+  deploymentModel         String?          @db.VarChar(200)
+  targetUsers             Json?            // string[]
+  operatingEnvironment    String?          @db.Text
+  geographicAvailability  Json?            // string[]
+  integrationCapabilities Json?            // string[]
+  technologyDescription   String?          @db.Text
+  evidenceSummary         String?          @db.Text
+  sourceReference         String?          @db.VarChar(500)
+  sourceLastUpdated       DateTime?
+  verificationStatus      VerificationStatus @default(UNVERIFIED)
+  isActive                Boolean          @default(true)
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+
+  discoveryCandidates     DiscoveryCandidate[]
+
+  @@index([providerId])
+  @@index([verificationStatus])
+  @@map("solutions")
+}
+
+// ── DiscoveryRun ──────────────────────────────────────────────
+
+model DiscoveryRun {
+  id               String          @id @default(uuid())
+  governmentNeedId String
+  governmentNeed   GovernmentNeed  @relation(fields: [governmentNeedId], references: [id])
+  initiatedById    String
+  initiatedBy      User            @relation(fields: [initiatedById], references: [id])
+  criteriaSnapshot Json            // snapshot of discovery criteria at time of run
+  sourceTypes      Json            // string[] — which source types were queried
+  status           DiscoveryRunStatus @default(RUNNING)
+  startedAt        DateTime        @default(now())
+  completedAt      DateTime?
+  errorMessage     String?         @db.Text
+  createdAt        DateTime        @default(now())
+
+  candidates       DiscoveryCandidate[]
+
+  @@index([governmentNeedId])
+  @@index([initiatedById])
+  @@index([status])
+  @@map("discovery_runs")
+}
+
+enum DiscoveryRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+// ── DiscoveryCandidate ────────────────────────────────────────
+
+model DiscoveryCandidate {
+  id                   String              @id @default(uuid())
+  governmentNeedId     String
+  governmentNeed       GovernmentNeed      @relation(fields: [governmentNeedId], references: [id])
+  discoveryRunId       String
+  discoveryRun         DiscoveryRun        @relation(fields: [discoveryRunId], references: [id])
+  solutionId           String
+  solution             Solution            @relation(fields: [solutionId], references: [id])
+  matchStatus          CandidateMatchStatus @default(DISCOVERED)
+
+  // AI-assisted relevance
+  aiRelevanceScore     Int?                // 0–100 discovery signal only
+  aiRelevanceLevel     String?             @db.VarChar(10) // HIGH, MEDIUM, LOW
+  aiMatchExplanation   Json?               // structured AI output
+  aiProvider           String?             @db.VarChar(100)
+  aiModel              String?             @db.VarChar(100)
+  aiPromptVersion      String?             @db.VarChar(50)
+  aiGeneratedAt        DateTime?
+  aiGenerated          Boolean             @default(false)
+
+  // Human review
+  humanReviewed        Boolean             @default(false)
+  reviewedById         String?
+  reviewedBy           User?               @relation(fields: [reviewedById], references: [id])
+  reviewedAt           DateTime?
+  reviewNote           String?             @db.Text
+  notRelevantReason    String?             @db.Text
+
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  @@unique([governmentNeedId, discoveryRunId, solutionId])
+  @@index([governmentNeedId])
+  @@index([discoveryRunId])
+  @@index([matchStatus])
+  @@map("discovery_candidates")
+}
+
+enum CandidateMatchStatus {
+  DISCOVERED
+  UNDER_REVIEW
+  SHORTLISTED
+  NOT_RELEVANT
+}
+
+// ── DiscoveryCriteria ─────────────────────────────────────────
+// Separate from GovernmentNeed — does not overwrite original content.
+
+model DiscoveryCriteria {
+  id               String         @id @default(uuid())
+  governmentNeedId String         @unique
+  governmentNeed   GovernmentNeed @relation(fields: [governmentNeedId], references: [id])
+  capabilities     Json?          // string[]
+  problemKeywords  Json?          // string[]
+  outcomeKeywords  Json?          // string[]
+  domain           String?        @db.VarChar(100)
+  subDomain        String?        @db.VarChar(100)
+  geographicScope  String?        @db.VarChar(500)
+  operatingEnv     String?        @db.VarChar(500)
+  constraints      Json?          // string[]
+  targetUsers      Json?          // string[]
+  techPreferences  Json?          // string[] — optional, not mandatory
+  techExclusions   Json?          // string[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@map("discovery_criteria")
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUDIT LOG
+// ─────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id             String   @id @default(uuid())
+  actorId        String?                        // null for system-generated events
+  actor          User?    @relation(fields: [actorId], references: [id])
+  action         String                         // e.g. LOGIN_SUCCESS, USER_CREATED
+  entityType     String?                        // e.g. User, Organization
+  entityId       String?
+  organizationId String?
+  metadata       Json?                          // extra context, NEVER credentials
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

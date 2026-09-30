@@ -1,0 +1,1518 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>NIVARAN — From Government Need to Validated Innovation</title>
+    <meta name="description" content="Evidence-driven government innovation procurement: from identifying the right problem to validating real-world outcomes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        /* ---------- FOREST & AMBER THEME ---------- */
+        --bg-primary:#FDFCF8;          /* warm near-white */
+        --bg-secondary:#F1EFE6;        /* warm sand */
+        --text-primary:#16241C;        /* deep forest charcoal */
+        --text-secondary:#5A6B5F;      /* muted moss */
+        --accent:#1F6B4A;              /* forest green */
+        --accent-2:#B0731E;            /* deep amber */
+        --accent-soft:rgba(31,107,74,.10);
+        --accent-2-soft:rgba(176,115,30,.12);
+        --border:rgba(22,36,28,.14);
+        --surface:#FFFFFF;
+        --display:'Bricolage Grotesque','Space Grotesk',system-ui,sans-serif;
+        --body:'Bricolage Grotesque',system-ui,sans-serif;
+      }
+
+      *{box-sizing:border-box;margin:0}
+      html{scroll-behavior:smooth;scroll-padding-top:70px}
+
+      body{
+        background:var(--bg-primary);
+        color:var(--text-primary);
+        font:400 1rem/1.65 var(--body);
+        overflow-x:hidden;
+      }
+
+      a{color:inherit;text-decoration:none}
+      button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+      :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+      h1,h2,h3,h4{font-family:var(--display);line-height:1.1;font-weight:600}
+
+      .wrap{width:min(1200px,92%);margin:auto;position:relative;z-index:2}
+      .narrow{width:min(860px,92%)}
+
+      .glow{
+        position:fixed;
+        width:520px;
+        height:520px;
+        left:-260px;
+        top:-260px;
+        border-radius:50%;
+        background:radial-gradient(circle,rgba(176,115,30,.09),transparent 65%);
+        pointer-events:none;
+        z-index:1;
+        will-change:transform;
+      }
+
+      /* ---------- NAV ---------- */
+      .nav{
+        position:fixed;
+        inset:0 0 auto;
+        z-index:50;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:14px max(4%,calc((100% - 1200px)/2));
+        transition:background .3s,border-color .3s;
+        border-bottom:1px solid transparent;
+      }
+      .nav.scrolled{
+        background:rgba(253,252,248,.90);
+        backdrop-filter:blur(12px);
+        border-color:var(--border);
+      }
+      .logo{display:flex;flex-direction:column;line-height:1.1}
+      .logo b{font:700 1.15rem var(--display);letter-spacing:.22em}
+      .logo small{font-size:.62rem;color:var(--text-secondary);letter-spacing:.06em}
+
+      .menu,.menu nav,.acts{display:flex;align-items:center;gap:28px}
+      .menu nav a{
+        font-size:.9rem;
+        color:var(--text-secondary);
+        position:relative;
+        transition:color .2s;
+      }
+      .menu nav a::after{
+        content:"";
+        position:absolute;
+        left:0;
+        bottom:-4px;
+        height:1px;
+        width:100%;
+        background:var(--accent);
+        transform:scaleX(0);
+        transform-origin:left;
+        transition:transform .3s;
+      }
+      .menu nav a:hover{color:var(--text-primary)}
+      .menu nav a:hover::after{transform:scaleX(1)}
+      .acts{gap:12px}
+
+      .burger{display:none;width:40px;height:40px;position:relative}
+      .burger span{
+        position:absolute;
+        left:9px;
+        right:9px;
+        height:1.5px;
+        background:var(--text-primary);
+        transition:.3s;
+      }
+      .burger span:first-child{top:15px}
+      .burger span:last-child{top:24px}
+      .burger[aria-expanded=true] span:first-child{top:20px;transform:rotate(45deg)}
+      .burger[aria-expanded=true] span:last-child{top:20px;transform:rotate(-45deg)}
+
+      .btn{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:11px 22px;
+        border:1px solid var(--border);
+        font:500 .9rem var(--display);
+        border-radius:3px;
+        transition:.25s;
+      }
+      .btn.ghost:hover{
+        border-color:var(--accent);
+        box-shadow:0 0 22px var(--accent-soft);
+      }
+      .btn.solid{
+        background:
+          linear-gradient(135deg,#2F8A63,#1F6B4A 55%,#135039) padding-box,
+          linear-gradient(135deg,#E6C98F,#8A5A18) border-box;
+        color:#fff;
+        border:1.5px solid transparent;
+      }
+      .btn.solid:hover{
+        filter:brightness(1.08);
+        box-shadow:0 8px 28px rgba(31,107,74,.35);
+        transform:translateY(-2px);
+      }
+      .arr{transition:transform .25s}
+      .btn:hover .arr{transform:translateX(5px)}
+
+      /* ---------- HERO ---------- */
+      .hero{
+        position:relative;
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        overflow:hidden;
+        background-color:var(--bg-secondary);
+        background-image:
+          linear-gradient(180deg,rgba(253,252,248,.58) 0,rgba(253,252,248,.22) 50%,#FDFCF8 100%),
+          linear-gradient(90deg,rgba(253,252,248,.92),rgba(253,252,248,.18) 75%),
+          url("assets/nivaran-hero-bg.jpg");
+        background-size:cover;
+        background-position:center;
+      }
+      .grid{
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(var(--border) 1px,transparent 1px) 0 0/64px 64px,
+          linear-gradient(90deg,var(--border) 1px,transparent 1px) 0 0/64px 64px;
+        opacity:.35;
+        -webkit-mask:radial-gradient(ellipse at 60% 40%,#000,transparent 75%);
+        mask:radial-gradient(ellipse at 60% 40%,#000,transparent 75%);
+        animation:gridmove 30s linear infinite;
+      }
+      @keyframes gridmove{to{background-position:64px 64px,64px 64px}}
+
+      .scan{
+        position:absolute;
+        left:0;
+        right:0;
+        height:120px;
+        top:-120px;
+        background:linear-gradient(transparent,rgba(31,107,74,.07),transparent);
+        border-bottom:1px solid rgba(31,107,74,.25);
+        animation:scan 9s linear infinite;
+      }
+      @keyframes scan{to{top:100%}}
+
+      .mq{
+        position:absolute;
+        left:0;
+        right:0;
+        top:16%;
+        overflow:hidden;
+        opacity:.16;
+        font:700 clamp(3rem,9vw,8rem)/1 var(--display);
+        white-space:nowrap;
+        -webkit-text-stroke:1px var(--accent);
+        color:transparent;
+      }
+      .mq.b{top:auto;bottom:6%;opacity:.12}
+      .mq-in{display:flex;width:max-content;animation:mq 60s linear infinite}
+      .mq-in.rev{animation-direction:reverse;animation-duration:75s}
+      .mq-in span{flex:none;padding-right:.6em}
+      @keyframes mq{to{transform:translateX(-50%)}}
+
+      .hero-c{padding:130px 0 90px}
+      .eyebrow{
+        font:500 .78rem var(--display);
+        letter-spacing:.25em;
+        color:var(--accent);
+        margin-bottom:24px;
+        padding-left:16px;
+        border-left:2px solid var(--accent);
+      }
+      h1{font-size:clamp(2.6rem,7.2vw,6.2rem);letter-spacing:-.03em;max-width:12em}
+      em{font-style:normal;color:var(--accent-2)}
+      .lead{max-width:600px;margin:28px 0 36px;color:#3B4A3F;font-size:1.1rem}
+      .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+      .trail{
+        margin-top:44px;
+        font:500 .85rem var(--display);
+        color:var(--text-secondary);
+        letter-spacing:.06em;
+      }
+
+      /* ---------- SECTIONS ---------- */
+      .sec{padding:130px 0;position:relative}
+      .alt{
+        background:linear-gradient(
+          var(--bg-primary),
+          var(--bg-secondary) 20%,
+          var(--bg-secondary) 80%,
+          var(--bg-primary)
+        );
+      }
+
+      /* centered section headings */
+      .sh{
+        max-width:760px;
+        margin-bottom:64px;
+        margin-inline:auto;
+        text-align:center;
+      }
+      .sh h2,.final h2{font-size:clamp(2rem,4.4vw,3.6rem);letter-spacing:-.02em}
+      .sh p{margin-top:18px;color:var(--text-secondary);font-size:1.05rem}
+      .sh.l{margin-bottom:40px}
+
+      /* ---------- FLOW ---------- */
+      .flow{position:relative;padding:20px 0}
+      .nodes{display:grid;grid-template-columns:repeat(8,1fr);position:relative}
+      .flow-line{
+        position:absolute;
+        left:6.25%;
+        right:6.25%;
+        top:48px;
+        height:1px;
+        background:var(--border);
+      }
+      .flow-line::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:var(--accent);
+        transform-origin:left;
+        transform:scaleX(var(--p,0));
+        transition:transform 1.2s cubic-bezier(.6,0,.2,1);
+        box-shadow:0 0 12px var(--accent);
+      }
+      .flow-line i{
+        position:absolute;
+        top:-3px;
+        width:7px;
+        height:7px;
+        border-radius:50%;
+        background:var(--accent);
+        box-shadow:0 0 0 3px #fff,0 0 14px 5px rgba(31,107,74,.5);
+        animation:sig 4s linear infinite;
+      }
+      @keyframes sig{
+        from{left:0;opacity:0}
+        10%,90%{opacity:1}
+        to{left:100%;opacity:0}
+      }
+
+      .node{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        gap:14px;
+        padding:0 6px;
+        color:var(--text-secondary);
+        transition:color .3s;
+      }
+      .node .dot{
+        width:56px;
+        height:56px;
+        border-radius:50%;
+        border:1px solid var(--border);
+        background:var(--bg-primary);
+        display:grid;
+        place-items:center;
+        font:600 1rem var(--display);
+        position:relative;
+        transition:.35s;
+      }
+      .node .ttl{font:500 .72rem var(--display);max-width:9em}
+      .node.done .dot{border-color:var(--accent);color:var(--accent)}
+      .node.done .dot::after{
+        content:"✓";
+        position:absolute;
+        right:-4px;
+        top:-4px;
+        font-size:.6rem;
+        background:var(--accent);
+        color:#fff;
+        border-radius:50%;
+        width:16px;
+        height:16px;
+        line-height:16px;
+      }
+      .node.on{color:var(--text-primary)}
+      .node.on .dot,.node:hover .dot{
+        border-color:var(--accent);
+        color:var(--accent);
+        transform:scale(1.18);
+        box-shadow:0 0 0 6px var(--accent-soft),0 0 30px rgba(31,107,74,.4);
+        animation:pulse 2s infinite;
+      }
+      @keyframes pulse{
+        50%{
+          box-shadow:0 0 0 12px rgba(31,107,74,.06),0 0 40px rgba(31,107,74,.5);
+        }
+      }
+
+      .detail{
+        margin-top:48px;
+        padding:28px 32px;
+        border:1px solid var(--border);
+        border-left:2px solid var(--accent);
+        background:var(--surface);
+        max-width:680px;
+        min-height:150px;
+      }
+      .detail .num,.txt .num{
+        font:600 .8rem var(--display);
+        color:var(--accent);
+        letter-spacing:.2em;
+      }
+      .detail h3{font-size:1.6rem;margin:8px 0}
+      .detail p{color:var(--text-secondary)}
+
+      /* ---------- FEATURES ---------- */
+      .feat{
+        display:grid;
+        grid-template-columns:1.1fr 1fr;
+        gap:64px;
+        align-items:center;
+        padding:56px 0;
+        border-top:1px solid var(--border);
+      }
+      .feat.rev .vis{order:2}
+      .vis{
+        border:1px solid #CBD8CC;
+        background:#fff;
+        padding:14px;
+        box-shadow:0 8px 30px rgba(22,36,28,.08);
+        transition:border-color .3s,box-shadow .3s;
+      }
+      .vis:hover{
+        border-color:#2F7D57;
+        box-shadow:0 10px 40px rgba(31,107,74,.18);
+      }
+      .vis svg{width:100%;height:auto;display:block}
+      .vis .bx{fill:#fff;stroke:#16241C;stroke-width:1.5}
+      .vis .bx.a{fill:#E4EFE7;stroke:#2F7D57}
+      .vis .bx.d{stroke-dasharray:5 4;fill:none;stroke:#2F7D57}
+      .vis .ln{
+        fill:none;
+        stroke:#2F7D57;
+        stroke-width:2;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+      }
+      .vis .ln.k{stroke:#16241C}
+      .vis .ln.d{stroke-dasharray:5 5}
+      .vis .g{fill:none;stroke:#D8E3D9;stroke-width:1}
+      .vis .sm{fill:#B9C9BC}
+      .vis .f{fill:#2F7D57}
+      .vis .sg{fill:#B0731E;stroke:#fff;stroke-width:2}
+      .vis text{fill:#16241C;font:500 12px var(--display);text-anchor:middle}
+      .vis text.m{fill:#5A6B5F;font-size:10.5px}
+      .vis text.s{text-anchor:start}
+      .vis text.e{text-anchor:end}
+      @media(prefers-reduced-motion:reduce){
+        .vis .sg,.vis .hl{display:none}
+      }
+
+      .txt h3{font-size:clamp(1.6rem,3vw,2.4rem);margin:12px 0 16px}
+      .txt>p{color:var(--text-secondary);margin-bottom:20px}
+      .txt ul{list-style:none;padding:0}
+      .txt li{
+        padding:8px 0 8px 22px;
+        border-top:1px solid var(--border);
+        position:relative;
+        font-size:.95rem;
+      }
+      .txt li::before{
+        content:"";
+        position:absolute;
+        left:0;
+        top:18px;
+        width:10px;
+        height:1px;
+        background:var(--accent);
+      }
+
+      /* ---------- CAPABILITIES ---------- */
+      .caps{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+      .cap{
+        padding:32px;
+        border:1px solid var(--border);
+        background:var(--surface);
+        transition:border-color .3s;
+      }
+      .cap:hover{border-color:var(--accent)}
+      .c1{grid-column:1/8}
+      .c2{grid-column:8/13;margin-top:60px}
+      .c3{grid-column:1/6}
+      .c4{grid-column:6/13;margin-top:40px}
+      .big{
+        font:700 clamp(3.5rem,7vw,6rem)/1 var(--display);
+        color:transparent;
+        -webkit-text-stroke:1px var(--accent);
+        display:block;
+        margin-bottom:12px;
+      }
+      .cap h3{font-size:1.35rem;margin-bottom:10px}
+      .cap p{color:var(--text-secondary)}
+      .mv{
+        display:block;
+        height:36px;
+        margin-top:22px;
+        width:140px;
+        background:
+          linear-gradient(var(--accent),var(--accent)) left 50%/0 2px no-repeat,
+          repeating-linear-gradient(90deg,var(--border) 0 1px,transparent 1px 14px);
+        animation:grow 3.5s ease-in-out infinite alternate;
+      }
+      @keyframes grow{to{background-size:100% 2px,auto}}
+
+      /* ---------- BEFORE / AFTER ---------- */
+      .ba{
+        position:relative;
+        height:640px;
+        border:1px solid var(--border);
+        overflow:hidden;
+        --pos:50%;
+        user-select:none;
+      }
+      .layer{
+        position:absolute;
+        inset:0;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        padding:28px 0;
+      }
+      .layer h3{font-size:1.1rem;margin-bottom:18px}
+      .layer ol{
+        list-style:none;
+        padding:0;
+        width:min(300px,80%);
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+        flex:1;
+        justify-content:space-between;
+      }
+      .layer li{
+        padding:9px 16px;
+        font:500 .85rem var(--display);
+        text-align:center;
+        position:relative;
+      }
+      .before{background:#EAE8DD;color:#7A7F72}
+      .before li{border:1px dashed #B8B5A4}
+      .before li:nth-child(odd){transform:translateX(-18px)}
+      .before li:nth-child(even){transform:translateX(16px)}
+      .before li:nth-child(3n){opacity:.5}
+      .after{
+        background:
+          radial-gradient(circle at 50% 30%,rgba(31,107,74,.10),transparent 60%),
+          var(--bg-secondary);
+        clip-path:inset(0 0 0 var(--pos));
+      }
+      .after li{border:1px solid var(--accent);background:var(--accent-soft)}
+      .after li:not(:last-child)::after{
+        content:"";
+        position:absolute;
+        left:50%;
+        top:100%;
+        height:14px;
+        width:1px;
+        background:var(--accent);
+        box-shadow:0 0 8px var(--accent);
+      }
+      .after h3{color:var(--accent)}
+      .ba-h{
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:var(--pos);
+        width:1px;
+        background:var(--accent);
+        box-shadow:0 0 14px var(--accent);
+        pointer-events:none;
+      }
+      .ba-h::after{
+        content:"‹ ›";
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:44px;
+        height:44px;
+        border-radius:50%;
+        background:var(--bg-primary);
+        border:1px solid var(--accent);
+        display:grid;
+        place-items:center;
+        color:var(--accent);
+        font-size:1rem;
+      }
+      .ba input{
+        position:absolute;
+        inset:0;
+        width:100%;
+        height:100%;
+        opacity:0;
+        cursor:ew-resize;
+        margin:0;
+      }
+      .ba:focus-within .ba-h::after{outline:2px solid var(--accent);outline-offset:3px}
+      .ba-tog{display:none}
+
+      /* ---------- EVIDENCE ---------- */
+      .ev{display:grid;grid-template-columns:1.2fr 1fr;gap:72px;align-items:center}
+      .pipe{position:relative;padding-left:36px}
+      .pipe ol{
+        list-style:none;
+        padding:0;
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+      }
+      .pipe li{
+        padding:13px 20px;
+        border:1px solid var(--border);
+        background:var(--surface);
+        font:500 .9rem var(--display);
+        position:relative;
+      }
+      .pipe li::before{
+        content:"";
+        position:absolute;
+        left:-36px;
+        top:50%;
+        width:36px;
+        height:1px;
+        background:var(--border);
+      }
+      .pipe li:last-child{border-color:var(--accent);color:var(--accent)}
+      .pipe::before{
+        content:"";
+        position:absolute;
+        left:0;
+        top:26px;
+        bottom:26px;
+        width:1px;
+        background:var(--accent);
+        opacity:.5;
+      }
+      .pipe i{
+        position:absolute;
+        left:-3px;
+        top:0;
+        width:7px;
+        height:7px;
+        border-radius:50%;
+        background:var(--accent);
+        box-shadow:0 0 0 3px #fff,0 0 12px 4px rgba(31,107,74,.5);
+        animation:down 5s linear infinite;
+      }
+      .pipe i:nth-of-type(2){animation-delay:1.7s}
+      .pipe i:nth-of-type(3){animation-delay:3.4s}
+      @keyframes down{
+        from{top:20px;opacity:0}
+        10%,90%{opacity:1}
+        to{top:calc(100% - 20px);opacity:0}
+      }
+
+      .ai{padding:36px;border:1px solid var(--border);background:var(--surface)}
+      .badge{
+        display:inline-block;
+        padding:8px 14px;
+        border:1px solid var(--accent-2);
+        color:var(--accent-2);
+        font:600 .72rem var(--display);
+        letter-spacing:.02em;
+        margin-bottom:22px;
+        background:var(--accent-2-soft);
+      }
+      .ai p{font-size:1.15rem;margin-bottom:22px}
+      .ai ul{list-style:none;padding:0;color:var(--text-secondary);font-size:.92rem}
+      .ai li{padding:7px 0;border-top:1px solid var(--border)}
+
+      /* ---------- FAQ ---------- */
+      .qa{border-bottom:1px solid var(--border)}
+      .qa h3{font-size:inherit}
+      .qa button{
+        width:100%;
+        text-align:left;
+        padding:22px 40px 22px 0;
+        font:500 1.1rem var(--display);
+        position:relative;
+        transition:color .2s;
+      }
+      .qa button:hover{color:var(--accent)}
+      .qa button::after{
+        content:"+";
+        position:absolute;
+        right:6px;
+        top:50%;
+        transform:translateY(-50%);
+        font-size:1.5rem;
+        color:var(--accent-2);
+        transition:transform .3s;
+      }
+      .qa button[aria-expanded=true]::after{transform:translateY(-50%) rotate(45deg)}
+      .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s}
+      .ans>p{overflow:hidden;color:var(--text-secondary)}
+      .qa.open .ans{grid-template-rows:1fr}
+      .qa.open .ans p{padding-bottom:22px}
+
+      /* ---------- FINAL CTA ---------- */
+      .final{overflow:hidden;text-align:center;padding:170px 0}
+      .final .grid{opacity:.25}
+      .final p{margin:22px 0 36px;color:var(--text-secondary)}
+      .final .cta-row{justify-content:center}
+      .c{max-width:820px}
+
+      /* ---------- FOOTER ---------- */
+      .foot{
+        border-top:1px solid var(--border);
+        padding:70px 0 30px;
+        color:var(--text-secondary);
+        font-size:.9rem;
+      }
+      .fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+      .fg p{margin-top:10px;max-width:360px}
+      .fd{color:var(--text-primary);font-family:var(--display)}
+      .foot h4{font-size:.95rem;color:var(--text-primary);margin-bottom:14px}
+      .foot nav a{display:block;padding:4px 0;transition:color .2s}
+      .foot nav a:hover{color:var(--accent)}
+      .fb{
+        display:flex;
+        justify-content:space-between;
+        margin-top:56px;
+        padding-top:22px;
+        border-top:1px solid var(--border);
+        gap:12px;
+        flex-wrap:wrap;
+      }
+
+      /* ---------- REVEAL ANIMATION ---------- */
+      .js [data-reveal]{
+        opacity:0;
+        transform:translateY(26px);
+        transition:opacity .9s,transform .9s cubic-bezier(.2,.7,.2,1);
+      }
+      .js [data-reveal=left]{transform:translateX(-32px)}
+      .js [data-reveal=right]{transform:translateX(32px)}
+      .js [data-reveal].in{opacity:1;transform:none}
+      .js .draw{
+        stroke-dasharray:1;
+        stroke-dashoffset:1;
+        transition:stroke-dashoffset 1.8s .4s ease;
+      }
+      .js .in .draw{stroke-dashoffset:0}
+
+      @media(prefers-reduced-motion:reduce){
+        *,::before,::after{
+          animation:none!important;
+          transition:none!important;
+          scroll-behavior:auto!important;
+        }
+        .js [data-reveal]{opacity:1;transform:none}
+        .js .draw{stroke-dashoffset:0}
+        .glow,.scan,.flow-line i,.pipe i{display:none}
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media(max-width:1024px){
+        .feat{gap:36px}
+        .ev{grid-template-columns:1fr;gap:48px}
+        .fg{grid-template-columns:1fr 1fr}
+        .node .ttl{font-size:.64rem}
+        .node .dot{width:46px;height:46px}
+        .flow-line{top:43px}
+      }
+
+      @media(max-width:860px){
+        .burger{display:block}
+        .menu{
+          position:absolute;
+          top:100%;
+          left:0;
+          right:0;
+          flex-direction:column;
+          align-items:stretch;
+          gap:20px;
+          padding:0 4%;
+          background:rgba(253,252,248,.97);
+          backdrop-filter:blur(12px);
+          max-height:0;
+          overflow:hidden;
+          opacity:0;
+          transition:max-height .4s,opacity .3s,padding .4s;
+          border-bottom:1px solid var(--border);
+        }
+        .menu.open{max-height:420px;opacity:1;padding:20px 4% 28px}
+        .menu nav{flex-direction:column;align-items:flex-start;gap:16px}
+        .menu nav a{font-size:1.1rem}
+        .acts .btn{flex:1;justify-content:center}
+        .nav{background:rgba(253,252,248,.88)}
+
+        .nodes{grid-template-columns:1fr;gap:26px}
+        .node{flex-direction:row;text-align:left;gap:18px;padding:0}
+        .node .ttl{max-width:none;font-size:.8rem}
+        .flow-line{left:28px;right:auto;top:28px;bottom:28px;width:1px;height:auto}
+        .flow-line::before{transform-origin:top;transform:scaleY(var(--p,0))}
+        .flow-line i{left:-3px;top:0;animation-name:sigv}
+        @keyframes sigv{
+          from{top:0;opacity:0}
+          10%,90%{opacity:1}
+          to{top:100%;opacity:0}
+        }
+        .node .dot{flex:none;width:56px;height:56px}
+
+        .feat,.feat.rev{grid-template-columns:1fr;padding:40px 0}
+        .feat.rev .vis{order:0}
+        .caps{display:flex;flex-direction:column}
+        .c2,.c4{margin-top:0}
+        .sec{padding:90px 0}
+
+        .ba{height:auto;overflow:visible;border:0}
+        .ba-tog{display:flex;margin-bottom:16px;border:1px solid var(--border)}
+        .ba-tog button{
+          flex:1;
+          padding:12px;
+          font:600 .95rem var(--display);
+          color:var(--text-secondary);
+        }
+        .ba-tog button[aria-pressed=true]{
+          background:var(--accent-soft);
+          color:var(--accent);
+        }
+        .layer{position:static;border:1px solid var(--border);padding:28px 0}
+        .layer ol{flex:none;gap:16px}
+        .after{clip-path:none}
+        .ba-h,.ba input{display:none}
+        .ba[data-view=before] .after,.ba[data-view=after] .before{display:none}
+      }
+
+      @media(max-width:560px){
+        .fg{grid-template-columns:1fr}
+        .hero-c{padding-top:110px}
+        .cta-row .btn{flex:1;justify-content:center}
+        .detail{padding:22px}
+        .ai{padding:24px}
+        .final{padding:110px 0}
+      }
+
+      /* ---------- POLISH OVERRIDES ---------- */
+      .cap,.detail,.ai{box-shadow:0 6px 24px rgba(22,36,28,.06)}
+      .final{background:var(--bg-secondary)}
+      .foot{background:var(--bg-secondary)}
+      h1,h2{font-weight:800;letter-spacing:-.035em}
+      h3{font-weight:700;letter-spacing:-.02em}
+      .big{font-weight:800}
+      .vis text{font-family:var(--body)}
+      html,*{scrollbar-width:none;-ms-overflow-style:none}
+      *::-webkit-scrollbar{display:none}
+      body,button,input{font-family:var(--body)}
+      .detail .num,.eyebrow{display:none}
+
+      .hero-c{text-align:center}
+      .hero-c h1{margin-inline:auto;max-width:13em}
+      .hero-c .lead{margin:28px auto 36px}
+      .hero-c .cta-row{justify-content:center}
+
+      .btn{border-radius:12px}
+    </style>
+    <script>document.documentElement.classList.add('js')</script>
+  </head>
+
+  <body id="top">
+    <div class="glow" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a class="logo" href="#top">
+        <b>NIVARAN</b>
+        <small>Evidence-Driven Government Innovation</small>
+      </a>
+
+      <button class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="menu" id="menu">
+        <nav aria-label="Primary">
+          <a href="#how">How It Works</a>
+          <a href="#solution">Solution</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="acts">
+          <a class="btn ghost" href="login.html">Login</a>
+          <a class="btn solid" href="login.html">Sign Up</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero">
+        <div class="grid" aria-hidden="true"></div>
+        <div class="scan" aria-hidden="true"></div>
+        <div class="mq" aria-hidden="true"><div class="mq-in"></div></div>
+        <div class="mq b" aria-hidden="true"><div class="mq-in rev"></div></div>
+
+        <div class="wrap hero-c">
+          <h1>From Government Need<br>to <em>Validated Innovation</em></h1>
+          <p class="lead">
+            NIVARAN transforms fragmented government innovation procurement into a transparent,
+            evidence-driven pathway — from identifying the right problem to validating real-world outcomes.
+          </p>
+          <div class="cta-row">
+            <a class="btn solid" href="#solution">Explore NIVARAN <span class="arr">→</span></a>
+            <a class="btn ghost" href="#how">See How It Works</a>
+          </div>
+          <p class="trail">Problem → Discovery → Pilot → Validation → Procurement</p>
+        </div>
+      </section>
+
+      <!-- ================= HOW IT WORKS ================= -->
+      <section id="how" class="sec">
+        <div class="wrap">
+          <header class="sh" data-reveal>
+            <h2>Watch Innovation Move From Need to Evidence</h2>
+            <p>Connected steps turn a government problem into a validated procurement decision.</p>
+          </header>
+
+          <div class="flow" id="flow" data-reveal>
+            <div class="flow-line" aria-hidden="true"><i></i></div>
+            <div class="nodes" id="nodes"></div>
+          </div>
+
+          <div class="detail" id="detail">
+            <span class="num" id="d-n"></span>
+            <h3 id="d-t"></h3>
+            <p id="d-p"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SOLUTION ================= -->
+      <section id="solution" class="sec alt">
+        <div class="wrap">
+          <header class="sh" data-reveal>
+            <h2>One Platform. One Connected Pathway.</h2>
+            <p>
+              NIVARAN connects the complete innovation procurement lifecycle instead of treating
+              discovery, pilots and procurement as isolated processes.
+            </p>
+          </header>
+          <div id="features"></div>
+        </div>
+      </section>
+
+      <!-- ================= WHAT CHANGES ================= -->
+      <section class="sec">
+        <div class="wrap">
+          <header class="sh" data-reveal>
+            <h2>What NIVARAN Changes</h2>
+          </header>
+
+          <div class="caps">
+            <article class="cap c1" data-reveal>
+              <span class="big">01</span>
+              <h3>Turn problems into measurable challenges</h3>
+              <p>Operational problems become outcome-based challenges with stakeholders, constraints and candidate KPIs.</p>
+              <i class="mv"></i>
+            </article>
+
+            <article class="cap c2" data-reveal="right">
+              <span class="big">02</span>
+              <h3>Connect government needs with relevant solutions</h3>
+              <p>Structured challenges are matched to startups, technologies and providers that may be relevant.</p>
+              <i class="mv"></i>
+            </article>
+
+            <article class="cap c3" data-reveal>
+              <span class="big">03</span>
+              <h3>Turn pilots into structured evidence</h3>
+              <p>Baselines, targets and measurements are defined up front, so results are comparable and traceable.</p>
+              <i class="mv"></i>
+            </article>
+
+            <article class="cap c4" data-reveal="right">
+              <span class="big">04</span>
+              <h3>Connect validated outcomes to procurement</h3>
+              <p>Independently validated results support compliant procurement and scale-up decisions.</p>
+              <i class="mv"></i>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BEFORE / AFTER ================= -->
+      <section class="sec alt">
+        <div class="wrap">
+          <header class="sh" data-reveal>
+            <h2>From Fragmented Process to Evidence-Driven Pathway</h2>
+            <p>NIVARAN connects the parts of the process that are often handled separately.</p>
+          </header>
+
+          <div class="ba" id="ba" data-view="after" data-reveal>
+            <div class="ba-tog" role="group" aria-label="Choose view">
+              <button data-v="before" aria-pressed="false">Before</button>
+              <button data-v="after" aria-pressed="true">After</button>
+            </div>
+
+            <div class="layer before">
+              <h3>Before NIVARAN</h3>
+              <ol>
+                <li>Problem</li>
+                <li>Manual discovery</li>
+                <li>Limited visibility</li>
+                <li>Unclear evaluation</li>
+                <li>Pilot</li>
+                <li>Scattered evidence</li>
+                <li>Procurement uncertainty</li>
+              </ol>
+            </div>
+
+            <div class="layer after">
+              <h3>After NIVARAN</h3>
+              <ol>
+                <li>Government Need</li>
+                <li>Structured Challenge</li>
+                <li>Solution Discovery</li>
+                <li>Evidence &amp; Evaluation</li>
+                <li>Controlled Pilot</li>
+                <li>Independent Validation</li>
+                <li>Procurement</li>
+                <li>Scale</li>
+              </ol>
+            </div>
+
+            <div class="ba-h" aria-hidden="true"></div>
+            <input type="range" min="0" max="100" value="50" aria-label="Reveal before or after NIVARAN workflow">
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= EVIDENCE ================= -->
+      <section id="evidence" class="sec">
+        <div class="wrap ev">
+          <div>
+            <header class="sh l" data-reveal>
+              <h2>Every Decision Leaves an Evidence Trail</h2>
+            </header>
+
+            <div class="pipe" data-reveal>
+              <ol>
+                <li>Original Problem</li>
+                <li>Baseline</li>
+                <li>Pilot Measurement</li>
+                <li>Actual Results</li>
+                <li>Evidence Package</li>
+                <li>Independent Validation</li>
+                <li>Validated Outcome</li>
+              </ol>
+              <i></i><i></i><i></i>
+            </div>
+          </div>
+
+          <aside class="ai" data-reveal="right">
+            <span class="badge">AI ASSISTS — HUMAN AUTHORITY DECIDES</span>
+            <p>
+              AI can assist with structuring, matching and summarization. Authorized human roles
+              remain responsible for evaluation, validation and procurement decisions.
+            </p>
+            <ul>
+              <li>Problem structuring</li>
+              <li>Stakeholder and constraint extraction</li>
+              <li>KPI suggestions</li>
+              <li>Solution relevance matching</li>
+              <li>Evidence summarization</li>
+              <li>Missing information detection</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ================= FAQ ================= -->
+      <section id="faq" class="sec alt">
+        <div class="wrap narrow">
+          <header class="sh" data-reveal>
+            <h2>Frequently Asked Questions</h2>
+          </header>
+
+          <div class="faq" id="faq-list" data-reveal>
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">What is NIVARAN?</button></h3>
+              <div class="ans">
+                <p>An evidence-driven platform for government innovation procurement, connecting a government need to discovery, pilots, independent validation and procurement.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Who is NIVARAN designed for?</button></h3>
+              <div class="ans">
+                <p>Government departments with operational problems, innovators and solution providers, evaluators, validators and procurement authorities.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Does NIVARAN replace government procurement systems?</button></h3>
+              <div class="ans">
+                <p>No. It creates structured, traceable evidence that supports existing compliant procurement processes.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">How does AI participate in the process?</button></h3>
+              <div class="ans">
+                <p>AI assists with structuring, extraction, matching, summarization and missing-information detection. It does not independently make legal, procurement, validation or approval decisions.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Can NIVARAN discover startups and technology providers?</button></h3>
+              <div class="ans">
+                <p>Yes. Solution discovery surfaces potentially relevant providers for a structured challenge; eligibility and suitability are then screened by authorized reviewers.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">How are pilot outcomes measured?</button></h3>
+              <div class="ans">
+                <p>Each pilot defines a baseline, target, scope and measurement method in advance, then records real-world results against them.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Who validates pilot evidence?</button></h3>
+              <div class="ans">
+                <p>Authorized human validators assess whether the evidence credibly demonstrates the promised outcome. AI does not validate.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Can successful pilots move toward procurement and scale?</button></h3>
+              <div class="ans">
+                <p>Yes. Validated results become the evidence base for compliant procurement and scale-up decisions.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Does NIVARAN make procurement decisions automatically?</button></h3>
+              <div class="ans">
+                <p>No. Human decision authority remains with the responsible officials at every decision point.</p>
+              </div>
+            </div>
+
+            <div class="qa" data-faq>
+              <h3><button aria-expanded="false">Can evidence from one pilot be reused later?</button></h3>
+              <div class="ans">
+                <p>Yes. Evidence is stored with its context, so it can inform later challenges where it is relevant.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FINAL CTA ================= -->
+      <section id="cta" class="sec final">
+        <div class="grid" aria-hidden="true"></div>
+        <div class="wrap c">
+          <h2 data-reveal>Start With the Problem.<br>End With <em>Evidence.</em></h2>
+          <p data-reveal>Build a clearer pathway from government need to validated innovation.</p>
+          <div class="cta-row" data-reveal>
+            <a class="btn solid" href="#solution">Explore NIVARAN <span class="arr">→</span></a>
+            <a class="btn ghost" href="login.html">Sign Up</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="foot">
+      <div class="wrap fg">
+        <div>
+          <a class="logo" href="#top"><b>NIVARAN</b></a>
+          <p class="fd">Evidence-Driven Government Innovation Procurement</p>
+          <p>A platform that connects government needs, solution discovery, pilots, independent validation and procurement.</p>
+        </div>
+
+        <nav aria-label="Platform">
+          <h4>Platform</h4>
+          <a href="#how">How It Works</a>
+          <a href="#solution">Solution</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <nav aria-label="Access">
+          <h4>Access</h4>
+          <a href="login.html">Login</a>
+          <a href="login.html">Sign Up</a>
+        </nav>
+
+        <nav aria-label="Resources">
+          <h4>Resources</h4>
+          <a href="#top">Documentation</a>
+          <a href="#top">Research</a>
+          <a href="#top">Contact</a>
+        </nav>
+      </div>
+
+      <div class="wrap fb">
+        <span>© 2026 NIVARAN</span>
+        <span>Built for evidence-driven innovation.</span>
+      </div>
+    </footer>
+
+    <script>
+      /* =========================================================
+         NIVARAN — live flow + stage feature blocks
+         ========================================================= */
+
+      const S = [
+        ['Define the Problem', 'Capture the real operational problem, desired outcome, constraints and context.', ['Outcome-based problem statement', 'Constraints and context recorded']],
+        ['Structure the Challenge', 'AI helps organize the problem into measurable outcomes, stakeholders, constraints and potential KPIs.', ['Stakeholder and constraint extraction', 'KPI suggestions for human review']],
+        ['Discover Solutions', 'Find potentially relevant startups, technologies and solution providers.', ['Relevance matching to the challenge', 'Broader visibility of providers']],
+        ['Verify & Evaluate', 'Screen eligibility, evidence and technical suitability before real-world testing.', ['Eligibility and evidence screening', 'Missing information detection']],
+        ['Design the Pilot', 'Define baseline, target, scope, measurement method, milestones and responsibilities.', ['Baseline and target agreed up front', 'Clear scope and responsibilities']],
+        ['Run & Measure', 'Execute a controlled pilot and collect real-world performance evidence.', ['Results recorded against the baseline', 'Milestones tracked with traceability']],
+        ['Independently Validate', 'Assess whether the evidence credibly demonstrates the promised outcome.', ['Evidence package reviewed by validators', 'Human decision authority']],
+        ['Procure & Scale', 'Use validated results to support compliant procurement and scale-up decisions.', ['Evidence supports procurement decisions', 'Reusable evidence for scale-up']]
+      ];
+
+      let U = 0;
+
+      const bx = (x, y, w, h, c = '') =>
+        `<rect class="bx ${c}" x="${x}" y="${y}" width="${w}" height="${h}" rx="4"/>`,
+
+        tx = (x, y, s, c = '') =>
+          `<text class="${c}" x="${x}" y="${y}">${s}</text>`,
+
+        ln = (d, c = '') =>
+          `<path class="ln draw ${c}" pathLength="1" d="${d}"/>`,
+
+        ar = (x, y) =>
+          ln(`M${x - 6} ${y - 4}L${x} ${y}L${x - 6} ${y + 4}`),
+
+        sg = (d, b = 0, t = 3.4) => {
+          const id = 'sp' + U++;
+          return `<path id="${id}" d="${d}" fill="none"/>` +
+            `<circle class="sg" r="4.5">` +
+            `<animateMotion dur="${t}s" begin="${b}s" repeatCount="indefinite">` +
+            `<mpath href="#${id}"/></animateMotion></circle>`;
+        },
+
+        ck = (x, y) =>
+          `<circle class="bx a" cx="${x}" cy="${y}" r="11"/>` +
+          ln(`M${x - 5} ${y}l3.5 4 6.5-8`),
+
+        flow = (d, tipx, tipy, b = 0) =>
+          ln(d) + ar(tipx, tipy) + sg(d, b);
+
+      const K = ['Problem', 'Challenge', 'Discovery', 'Evaluation', 'Pilot', 'Measurement', 'Validation', 'Procurement'];
+
+      const M = [
+        [1, 1, 1],
+        [1, 1, 0],
+        [1, 0, 0]
+      ];
+
+      const PT = [
+        [50, 200], [110, 190], [170, 168], [230, 140],
+        [290, 116], [350, 98], [410, 88]
+      ];
+
+      const GP = 'M' + PT.map(p => p.join(' ')).join('L');
+
+      const V = [
+        /* 1 — problem -> outcome -> constraints */
+        bx(24, 50, 124, 200) +
+        bx(40, 68, 44, 10, 'a') +
+        [[98, 92], [116, 92], [134, 64], [152, 92], [170, 80], [188, 52]]
+          .map(([y, w]) => `<rect class="sm" x="40" y="${y}" width="${w}" height="5" rx="2"/>`).join('') +
+        tx(86, 232, 'Problem', 'm') +
+        flow('M148 150H210', 210, 150) +
+        `<circle class="bx a" cx="258" cy="150" r="46"/>` +
+        `<circle class="bx" cx="258" cy="150" r="30"/>` +
+        `<circle class="bx a" cx="258" cy="150" r="14"/>` +
+        `<circle class="f" cx="258" cy="150" r="5"/>` +
+        tx(258, 222, 'Desired outcome', 'm') +
+        bx(356, 88, 100, 46) +
+        bx(356, 166, 100, 46) +
+        tx(406, 116, 'Constraints') +
+        tx(406, 194, 'Context') +
+        flow('M304 150H330V111H352', 352, 111) +
+        flow('M304 150H330V189H352', 352, 189, 1.2),
+
+        /* 2 — AI-assisted structuring */
+        bx(24, 80, 120, 140) +
+        [[100, 80], [116, 72], [132, 90], [148, 60], [164, 84], [180, 70]]
+          .map(([y, w], i) => `<rect class="sm" x="${40 + (i % 3) * 6}" y="${y}" width="${w}" height="5" rx="2"/>`).join('') +
+        tx(84, 208, 'Raw problem', 'm') +
+        flow('M144 150H196', 196, 150) +
+        bx(200, 110, 96, 80, 'a') +
+        tx(248, 146, 'Structuring') +
+        tx(248, 164, 'AI assists', 'm') +
+        tx(248, 214, 'Reviewed by people', 'm') +
+        ['Outcomes', 'Stakeholders', 'Constraints', 'KPIs']
+          .map((s, i) =>
+            bx(352, 48 + i * 56, 104, 36) +
+            tx(404, 71 + i * 56, s) +
+            flow(`M296 150H324V${66 + i * 56}H348`, 348, 66 + i * 56, i * .7)
+          ).join(''),
+
+        /* 3 — solutions converge on challenge */
+        ['Startup', 'Technology', 'Provider', 'Research', 'Product']
+          .map((s, i) => {
+            const y = 40 + i * 55;
+            return bx(24, y - 16, 100, 32) +
+              tx(74, y + 4, s) +
+              ln(`M124 ${y}C220 ${y} 250 150 334 150`) +
+              sg(`M124 ${y}C220 ${y} 250 150 334 150`, i * .6, 3.6);
+          }).join('') +
+        ar(336, 150) +
+        `<circle class="bx a" cx="380" cy="150" r="44"/>` +
+        tx(380, 146, 'Innovation') +
+        tx(380, 163, 'challenge'),
+
+        /* 4 — evidence + evaluation matrix */
+        bx(32, 40, 408, 176) +
+        `<rect class="hl" x="33" y="72" width="406" height="48" fill="#1F6B4A" opacity=".12">` +
+        `<animate attributeName="y" values="72;120;168;72" keyTimes="0;.33;.66;1" dur="7s" calcMode="discrete" repeatCount="indefinite"/>` +
+        `</rect>` +
+        `<path class="g" d="M32 72H440M32 120H440M32 168H440M140 40V216M240 40V216M340 40V216"/>` +
+        ['Eligibility', 'Evidence', 'Suitability']
+          .map((s, i) => tx(190 + i * 100, 61, s)).join('') +
+        ['Solution A', 'Solution B', 'Solution C']
+          .map((s, i) => tx(44, 100 + i * 48, s, 's')).join('') +
+        M.map((r, i) =>
+          r.map((v, j) =>
+            v
+              ? ck(190 + j * 100, 96 + i * 48)
+              : `<circle class="bx d" cx="${190 + j * 100}" cy="${96 + i * 48}" r="11"/>`
+          ).join('')
+        ).join('') +
+        tx(44, 250, '✓ Meets criteria', 'm s') +
+        tx(200, 250, '○ Under review', 'm s'),
+
+        /* 5 — pilot boundary + KPI tracking */
+        `<rect class="bx d" x="24" y="40" width="268" height="220" rx="8"/>` +
+        tx(40, 66, 'Pilot scope', 'm s') +
+        bx(48, 88, 100, 36) +
+        tx(98, 111, 'Scope') +
+        bx(168, 88, 100, 36) +
+        tx(218, 111, 'Roles') +
+        ln('M60 160H256') +
+        [[60, 'Baseline'], [158, 'Milestone'], [256, 'Review']]
+          .map(([x, s]) =>
+            `<circle class="bx a" cx="${x}" cy="160" r="8"/>` +
+            tx(x, 192, s)
+          ).join('') +
+        tx(158, 236, 'Defined before the pilot starts', 'm') +
+        bx(324, 40, 132, 220) +
+        tx(390, 66, 'KPI tracking', 'm') +
+        [[104, 62, 404], [158, 78, 424], [212, 48, 412]]
+          .map(([y, w, t], i) =>
+            tx(340, y - 10, 'KPI ' + (i + 1), 'm s') +
+            `<rect class="sm" x="340" y="${y}" width="100" height="8" rx="2"/>` +
+            `<rect class="f" x="340" y="${y}" width="0" height="8" rx="2">` +
+            `<animate attributeName="width" values="0;${w};${w}" keyTimes="0;.6;1" dur="4s" repeatCount="indefinite"/>` +
+            `</rect>` +
+            `<path class="ln k" d="M${t} ${y - 4}V${y + 12}"/>`
+          ).join('') +
+        flow('M292 150H324', 324, 150),
+
+        /* 6 — baseline -> actual -> target */
+        ln('M50 36V240H444', 'k') +
+        `<path class="ln k d" d="M50 200H444"/>` +
+        `<path class="ln d" d="M50 80H444"/>` +
+        tx(444, 72, 'Target', 'm e') +
+        tx(444, 218, 'Baseline', 'm e') +
+        tx(50, 28, 'Result', 'm s') +
+        tx(444, 262, 'Time', 'm e') +
+        ln(GP) +
+        PT.slice(1).map(([x, y]) => `<circle class="bx a" cx="${x}" cy="${y}" r="4.5"/>`).join('') +
+        tx(350, 124, 'Actual') +
+        sg(GP, 0, 4.5),
+
+        /* 7 — evidence package -> validator -> validated */
+        bx(24, 90, 116, 120) +
+        tx(82, 146, 'Evidence') +
+        tx(82, 164, 'package') +
+        flow('M140 150H196', 196, 150) +
+        `<circle class="bx a" cx="244" cy="150" r="48"/>` +
+        ln('M224 150l14 14 26-30') +
+        tx(244, 224, 'Independent validator') +
+        tx(244, 242, 'Human authority decides', 'm') +
+        flow('M292 150H348', 348, 150, 1.2) +
+        bx(352, 100, 104, 100, 'a') +
+        ck(404, 134) +
+        tx(404, 170, 'Validated') +
+        tx(404, 186, 'outcome'),
+
+        /* 8 — validated outcome -> procurement -> scale */
+        `<circle class="bx a" cx="68" cy="140" r="36"/>` +
+        ln('M52 140l12 12 22-24') +
+        tx(68, 204, 'Validated') +
+        tx(68, 220, 'outcome') +
+        flow('M104 140H176', 176, 140) +
+        bx(180, 108, 112, 64) +
+        tx(236, 145, 'Procurement') +
+        flow('M292 140H336', 336, 140, 1.2) +
+        bx(336, 64, 128, 196) +
+        tx(400, 90, 'Scale-up', 'm') +
+        ln('M352 236H448', 'k') +
+        [36, 66, 96, 126]
+          .map((h, i) => bx(360 + i * 24, 236 - h, 16, h, 'a')).join('')
+      ];
+
+      const ic = ['◎', '▦', '✦', '✓', '⌖', '∿', '⛨', '↗'];
+
+      document.getElementById('nodes').innerHTML = S.map((s, i) =>
+        `<button class="node" data-stage="${i + 1}">` +
+        `<span class="dot" aria-hidden="true">${ic[i]}</span>` +
+        `<span class="ttl"><span class="sr">0${i + 1}</span> ${s[0]}</span>` +
+        `</button>`
+      ).join('');
+
+      document.getElementById('features').innerHTML = S.map((s, i) =>
+        `<article class="feat${i % 2 ? ' rev' : ''}" id="stage-${i + 1}" tabindex="-1" data-reveal>` +
+        `<div class="vis" data-reveal="${i % 2 ? 'right' : 'left'}">` +
+        `<svg viewBox="0 0 480 300" role="img" aria-label="Diagram: ${s[0]}">${V[i]}</svg>` +
+        `</div>` +
+        `<div class="txt">` +
+        `<h3>${s[0]}</h3>` +
+        `<p>${s[1]}</p>` +
+        `<ul>${s[2].map(p => `<li>${p}</li>`).join('')}</ul>` +
+        `</div>` +
+        `</article>`
+      ).join('');
+
+      /* ---------- live flow controller ---------- */
+      (() => {
+        const flow = document.getElementById('flow'),
+          nodes = [...document.querySelectorAll('.node')],
+          dn = document.getElementById('d-n'),
+          dt = document.getElementById('d-t'),
+          dp = document.getElementById('d-p');
+
+        const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+        let a = 0,
+          hold = false;
+
+        function set(i) {
+          a = i;
+          nodes.forEach((n, k) => {
+            n.classList.toggle('on', k === i);
+            n.classList.toggle('done', k < i);
+            k === i ? n.setAttribute('aria-current', 'step') : n.removeAttribute('aria-current');
+          });
+          flow.style.setProperty('--p', i / 7);
+          dn.textContent = '0' + (i + 1) + ' / ' + K[i];
+          dt.textContent = S[i][0];
+          dp.textContent = S[i][1];
+        }
+
+        nodes.forEach((n, i) => {
+          n.addEventListener('mouseenter', () => { hold = true; set(i); });
+          n.addEventListener('focus', () => { hold = true; set(i); });
+          n.addEventListener('mouseleave', () => hold = false);
+          n.addEventListener('blur', () => hold = false);
+          n.addEventListener('click', () => {
+            const t = document.getElementById('stage-' + (i + 1));
+            t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+            t.focus({ preventScroll: true });
+          });
+        });
+
+        set(0);
+
+        if (!reduce) {
+          setInterval(() => {
+            if (!hold && !document.hidden) set((a + 1) % 8);
+          }, 3200);
+        }
+      })();
+
+      /* ---------- FAQ accordion ---------- */
+      document.querySelectorAll('[data-faq]').forEach(q => {
+        const b = q.querySelector('button');
+        b.addEventListener('click', () => {
+          const o = q.classList.toggle('open');
+          b.setAttribute('aria-expanded', o);
+        });
+      });
+
+      /* ---------- before / after slider ---------- */
+      (() => {
+        const ba = document.getElementById('ba'),
+          r = ba.querySelector('input');
+
+        r.addEventListener('input', () => ba.style.setProperty('--pos', r.value + '%'));
+
+        ba.querySelectorAll('.ba-tog button').forEach(b =>
+          b.addEventListener('click', () => {
+            ba.dataset.view = b.dataset.v;
+            ba.querySelectorAll('.ba-tog button').forEach(x =>
+              x.setAttribute('aria-pressed', x === b)
+            );
+          })
+        );
+      })();
+
+      /* ---------- nav / menu ---------- */
+      const $ = s => document.querySelector(s);
+      const nav = $('.nav'),
+        burger = $('.burger'),
+        menu = $('#menu');
+
+      addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+      burger.addEventListener('click', () => {
+        const o = menu.classList.toggle('open');
+        burger.setAttribute('aria-expanded', o);
+      });
+
+      menu.addEventListener('click', e => {
+        if (e.target.closest('a')) {
+          menu.classList.remove('open');
+          burger.setAttribute('aria-expanded', false);
+        }
+      });
+
+      /* ---------- marquee: two identical halves => seamless loop ---------- */
+      const words = 'GOVERNMENT PROBLEMS → OUTCOME-BASED CHALLENGES → SOLUTION DISCOVERY → EVIDENCE → PILOTS → VALIDATION → PROCUREMENT → SCALE →';
+      document.querySelectorAll('.mq-in').forEach(m => {
+        m.innerHTML = `<span>${words}</span><span aria-hidden="true">${words}</span>`;
+      });
+
+      /* ---------- reveal on scroll ---------- */
+      const io = new IntersectionObserver(es =>
+        es.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        }), { threshold: .15 });
+
+      document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+      /* ---------- cursor glow + hero parallax ---------- */
+      if (matchMedia('(hover:hover) and (min-width:861px) and (prefers-reduced-motion:no-preference)').matches) {
+        const g = $('.glow'),
+          hero = $('.hero');
+        let tx = 0, ty = 0, x = 0, y = 0, run = false;
+
+        addEventListener('mousemove', e => {
+          tx = e.clientX;
+          ty = e.clientY;
+          if (!run) {
+            run = true;
+            requestAnimationFrame(tick);
+          }
+        }, { passive: true });
+
+        function tick() {
+          x += (tx - x) * .12;
+          y += (ty - y) * .12;
+          g.style.transform = `translate(${x}px,${y}px)`;
+          if (Math.abs(tx - x) > .5 || Math.abs(ty - y) > .5) requestAnimationFrame(tick);
+          else run = false;
+        }
+
+        addEventListener('scroll', () => {
+          if (scrollY < innerHeight) hero.style.backgroundPositionY = `calc(50% + ${scrollY * .15}px)`;
+        }, { passive: true });
+      } else {
+        $('.glow').remove();
+      }
+
+      /* ---------- screen-reader-only utility ---------- */
+      const st = document.createElement('style');
+      st.textContent = '.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}';
+      document.head.append(st);
+    </script>
+  </body>
+</html>
